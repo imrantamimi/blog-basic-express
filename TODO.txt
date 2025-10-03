@@ -1,0 +1,17 @@
+Blog Express - TODO
+1 - Create admin side API's for -
+    1 - User
+    2 - Category
+    3 - Tags
+    4 - Posts
+2 - Create Tests for admin side API's - 
+    1 - User
+    2 - Category
+    3 - Tags
+    4 - Posts
+3 - Add file upload and validations to APIs
+4 - Add authentication
+5 - Create client side APIs
+6 - Create tests for client side APIs
+7 - Git actions
+8 - Containerize
