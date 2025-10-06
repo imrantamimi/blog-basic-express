@@ -1,4 +1,4 @@
-const categoriesDatabase = require('./categories.mongo');
+const categoriesDatabase = require("./categories.mongo");
 
 // CREATE a category
 async function createCategory(data) {
@@ -19,7 +19,10 @@ async function getAllCategories(skip, limit) {
 
 //Read category by ID
 async function getCategoryById(id) {
-  return await categoriesDatabase.findById(id).populate('createdBy').populate('parentCategory');
+  return await categoriesDatabase
+    .findById(id)
+    .populate("createdBy")
+    .populate("parentCategory");
 }
 
 //Update category
@@ -28,8 +31,8 @@ async function updateCategory(id, data) {
     .findByIdAndUpdate(id, data, {
       new: true,
     })
-    .populate('createdBy')
-    .populate('parentCategory');
+    .populate("createdBy")
+    .populate("parentCategory");
 }
 
 //Delete category

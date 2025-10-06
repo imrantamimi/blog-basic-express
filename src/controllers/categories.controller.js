@@ -1,5 +1,11 @@
-const { getAllCategories, getCategoryById, createCategory, updateCategory, deleteCategory } = require('../models/categories.model');
-const { getPagination } = require('../utils/query');
+const {
+  getAllCategories,
+  getCategoryById,
+  createCategory,
+  updateCategory,
+  deleteCategory,
+} = require("../models/categories.model");
+const { getPagination } = require("../utils/query");
 
 async function httpGetAllCategories(req, res) {
   const { skip, limit } = getPagination(req.query);

@@ -1,4 +1,4 @@
-const tagsDatabase = require('./tags.mongo');
+const tagsDatabase = require("./tags.mongo");
 
 // CREATE a tag
 async function createTag(data) {
@@ -19,7 +19,7 @@ async function getAllTags(skip, limit) {
 
 // READ one tag by ID
 async function getTagById(id) {
-  return await tagsDatabase.findById(id).populate('createdBy');
+  return await tagsDatabase.findById(id).populate("createdBy");
 }
 
 // UPDATE tag by ID
@@ -28,7 +28,7 @@ async function updateTag(id, data) {
     .findByIdAndUpdate(id, data, {
       new: true, //returns updated document
     })
-    .populate('createdBy');
+    .populate("createdBy");
 }
 
 //DELETE tag by id

@@ -1,6 +1,6 @@
-const axios = require('axios');
+const axios = require("axios");
 
-const usersDatabase = require('./users.mongo');
+const usersDatabase = require("./users.mongo");
 
 // CREATE a new user
 async function createUser(data) {

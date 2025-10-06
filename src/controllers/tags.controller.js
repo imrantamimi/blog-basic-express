@@ -1,5 +1,11 @@
-const { getAllTags, getTagById, createTag, updateTag, deleteTag } = require('../models/tags.model');
-const { getPagination } = require('../utils/query');
+const {
+  getAllTags,
+  getTagById,
+  createTag,
+  updateTag,
+  deleteTag,
+} = require("../models/tags.model");
+const { getPagination } = require("../utils/query");
 
 async function httpGetAllTags(req, res) {
   const { skip, limit } = getPagination(req.query);

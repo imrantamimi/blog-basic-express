@@ -1,5 +1,11 @@
-const { getAllUsers, createUser, getUserById, updateUser, deleteUser } = require('../models/users.model');
-const { getPagination } = require('../utils/query');
+const {
+  getAllUsers,
+  createUser,
+  getUserById,
+  updateUser,
+  deleteUser,
+} = require("../models/users.model");
+const { getPagination } = require("../utils/query");
 
 async function httpGetAllUsers(req, res) {
   const { skip, limit } = getPagination(req.query);
