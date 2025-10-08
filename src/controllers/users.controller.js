@@ -1,11 +1,9 @@
-const {
-  getAllUsers,
-  createUser,
-  getUserById,
-  updateUser,
-  deleteUser,
-} = require("../models/users.model");
-const { getPagination } = require("../utils/query");
+const jwt = require('jsonwebtoken');
+
+const { getAllUsers, createUser, getUserById, updateUser, deleteUser, getUserByEmail } = require('../models/users.model');
+const { getPagination } = require('../utils/query');
+
+const JWT_SECRET = process.env.JWT_SECRET || 'secret';
 
 async function httpGetAllUsers(req, res) {
   const { skip, limit } = getPagination(req.query);
@@ -15,9 +13,9 @@ async function httpGetAllUsers(req, res) {
 
 async function httpCreateUser(req, res) {
   try {
-    const user = req.body;
-    await createUser(user);
-    return res.status(201).json(user);
+    const data = req.body;
+    const user = await createUser(data);
+    return res.status(200).json(user);
   } catch (err) {
     throw new Error(err);
   }
@@ -44,10 +42,42 @@ async function httpDeleteUser(req, res) {
   });
 }
 
+async function httpLoginUser(req, res) {
+  const { email, password } = req.body;
+  const user = await getUserByEmail(email);
+  if (!user) {
+    return res.status(404).json({
+      error: 'User not found',
+    });
+  }
+  const isMatch = await user.comparePassword(password); // Compare password
+  if (!isMatch) {
+    return res.status(401).json({
+      error: 'Invalid password',
+    });
+  }
+
+  const token = jwt.sign(
+    {
+      id: user._id,
+      role: user.role,
+    },
+    JWT_SECRET,
+    {
+      expiresIn: '1d',
+    }
+  );
+
+  res.json({
+    token: token,
+  });
+}
+
 module.exports = {
   httpGetAllUsers,
   httpGetUserById,
   httpCreateUser,
   httpUpdateUser,
   httpDeleteUser,
+  httpLoginUser,
 };

@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const slugify = require("slugify");
+const mongoose = require('mongoose');
+const slugify = require('slugify');
 
 const postsSchema = mongoose.Schema(
   {
@@ -12,7 +12,7 @@ const postsSchema = mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-      unique: true,
+      unique: true, // Also creates an index
       lowercase: true,
     },
     image: {
@@ -28,23 +28,23 @@ const postsSchema = mongoose.Schema(
     },
     category: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Category",
+      ref: 'Category',
       required: true,
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
     },
   },
   {
     timestamps: true, //Add createdAt and updatedAt fields
-  },
+  }
 );
 
 //Automatically generate slug name if not set
 
-postsSchema.pre("save", function (next) {
-  if (this.isModified("name")) {
+postsSchema.pre('save', function (next) {
+  if (this.isModified('name')) {
     this.slug = slugify(this.name, {
       lower: true,
       strict: true,
@@ -53,10 +53,4 @@ postsSchema.pre("save", function (next) {
   next();
 });
 
-// Indexing slug for faster retrieval
-
-postsSchema.index({
-  slug: 1,
-});
-
-module.exports = postsSchema;
+module.exports = mongoose.model('Post', postsSchema);
