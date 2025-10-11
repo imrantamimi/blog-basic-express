@@ -1,18 +1,12 @@
-const express = require("express");
-const {
-  httpGetAllTags,
-  httpGetTagById,
-  httpCreateTag,
-  httpUpdateTag,
-  httpDeleteTag,
-} = require("../controllers/tags.controller");
+import express from 'express';
+import { httpGetAllTags, httpCreateTag, httpDeleteTag, httpGetTagById, httpUpdateTag } from '../controllers/tags.controller.js';
 
 const tagsRouter = express.Router();
 
-tagsRouter.get("/", httpGetAllTags);
-tagsRouter.get("/:id", httpGetTagById);
-tagsRouter.post("/", httpCreateTag);
-tagsRouter.put("/:id", httpUpdateTag);
-tagsRouter.delete("/:id", httpDeleteTag);
+tagsRouter.get('/', httpGetAllTags);
+tagsRouter.get('/:id', httpGetTagById);
+tagsRouter.post('/', httpCreateTag);
+tagsRouter.put('/:id', httpUpdateTag);
+tagsRouter.delete('/:id', httpDeleteTag);
 
-module.exports = tagsRouter;
+export { tagsRouter };

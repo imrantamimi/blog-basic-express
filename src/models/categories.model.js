@@ -1,15 +1,14 @@
-const categoriesDatabase = require('./categories.mongo');
+import { CategoryDatabase } from './categories.mongo.js';
 
 // CREATE a category
-async function createCategory(data) {
-  const category = new categoriesDatabase(data);
+export async function createCategory(data) {
+  const category = new CategoryDatabase(data);
   return await category.save();
 }
 
 //READ all categories
-async function getAllCategories(skip, limit) {
-  return await categoriesDatabase
-    .find()
+export async function getAllCategories(skip, limit) {
+  return await CategoryDatabase.find()
     .sort({
       createdAt: 1,
     })
@@ -19,29 +18,20 @@ async function getAllCategories(skip, limit) {
 }
 
 //Read category by ID
-async function getCategoryById(id) {
-  return await categoriesDatabase.findById(id).populate('createdBy').populate('parentCategory');
+export async function getCategoryById(id) {
+  return await CategoryDatabase.findById(id).populate('createdBy').populate('parentCategory');
 }
 
 //Update category
-async function updateCategory(id, data) {
-  return await categoriesDatabase
-    .findByIdAndUpdate(id, data, {
-      new: true,
-    })
+export async function updateCategory(id, data) {
+  return await CategoryDatabase.findByIdAndUpdate(id, data, {
+    new: true,
+  })
     .populate('createdBy')
     .populate('parentCategory');
 }
 
 //Delete category
-async function deleteCategory(id) {
-  return await categoriesDatabase.findByIdAndDelete(id);
+export async function deleteCategory(id) {
+  return await CategoryDatabase.findByIdAndDelete(id);
 }
-
-module.exports = {
-  createCategory,
-  getAllCategories,
-  getCategoryById,
-  updateCategory,
-  deleteCategory,
-};

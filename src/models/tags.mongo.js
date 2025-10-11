@@ -1,7 +1,9 @@
-const mongoose = require('mongoose');
-const slugify = require('slugify');
+import mongoose from 'mongoose';
+import slugify from 'slugify';
 
-const tagsSchema = new mongoose.Schema(
+const { Schema, model } = mongoose;
+
+const tagSchema = new Schema(
   {
     name: {
       type: String,
@@ -17,7 +19,7 @@ const tagsSchema = new mongoose.Schema(
       unique: true, // Also creates an index
     },
     createdBy: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: 'User',
     },
     active: {
@@ -32,7 +34,7 @@ const tagsSchema = new mongoose.Schema(
 );
 
 // automatically generate slug from name if not set
-tagsSchema.pre('save', function (next) {
+tagSchema.pre('save', function (next) {
   if (this.isModified('name')) {
     this.slug = slugify(this.name, {
       lowercase: true,
@@ -42,4 +44,4 @@ tagsSchema.pre('save', function (next) {
   next();
 });
 
-module.exports = mongoose.model('Tag', tagsSchema);
+export const tagDatabase = model('Tag', tagSchema);

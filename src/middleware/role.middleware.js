@@ -1,4 +1,4 @@
-function isAdmin(res, req, next) {
+export function isAdmin(res, req, next) {
   if (req.user.role !== 'admin') {
     return res.status(403).json({
       error: 'Access denied: Admins only',
@@ -7,7 +7,7 @@ function isAdmin(res, req, next) {
   next();
 }
 
-function isUser(res, req, next) {
+export function isUser(res, req, next) {
   if (req.user.role !== 'user' && req.user.role !== 'admin') {
     return res.status(403).json({
       error: 'Access denied: Users only',
@@ -15,8 +15,3 @@ function isUser(res, req, next) {
   }
   next();
 }
-
-module.exports = {
-  isAdmin,
-  isUser,
-};

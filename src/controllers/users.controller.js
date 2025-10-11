@@ -1,17 +1,17 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 
-const { getAllUsers, createUser, getUserById, updateUser, deleteUser, getUserByEmail } = require('../models/users.model');
-const { getPagination } = require('../utils/query');
+import { getAllUsers, createUser, getUserByEmail, getUserById, updateUser, deleteUser } from '../models/users.model.js';
+import { getPagination } from '../utils/query.js';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'secret';
 
-async function httpGetAllUsers(req, res) {
+export async function httpGetAllUsers(req, res) {
   const { skip, limit } = getPagination(req.query);
   const users = await getAllUsers(skip, limit);
   return res.status(200).json(users);
 }
 
-async function httpCreateUser(req, res) {
+export async function httpCreateUser(req, res) {
   try {
     const data = req.body;
     const user = await createUser(data);
@@ -21,20 +21,20 @@ async function httpCreateUser(req, res) {
   }
 }
 
-async function httpGetUserById(req, res) {
+export async function httpGetUserById(req, res) {
   const userId = req.params.id;
   const user = await getUserById(userId);
   return res.status(200).json(user);
 }
 
-async function httpUpdateUser(req, res) {
+export async function httpUpdateUser(req, res) {
   const userId = req.params.id;
   const user = req.body;
   await updateUser(user, userId);
   return res.status(200).json(user);
 }
 
-async function httpDeleteUser(req, res) {
+export async function httpDeleteUser(req, res) {
   const userId = req.params.id;
   await deleteUser(userId);
   return res.status(201).json({
@@ -42,7 +42,7 @@ async function httpDeleteUser(req, res) {
   });
 }
 
-async function httpLoginUser(req, res) {
+export async function httpLoginUser(req, res) {
   const { email, password } = req.body;
   const user = await getUserByEmail(email);
   if (!user) {
@@ -72,12 +72,3 @@ async function httpLoginUser(req, res) {
     token: token,
   });
 }
-
-module.exports = {
-  httpGetAllUsers,
-  httpGetUserById,
-  httpCreateUser,
-  httpUpdateUser,
-  httpDeleteUser,
-  httpLoginUser,
-};

@@ -1,7 +1,9 @@
-const mongoose = require('mongoose');
-const slugify = require('slugify');
+import mongoose from 'mongoose';
+import slugify from 'slugify';
 
-const categoriesSchema = new mongoose.Schema(
+const { Schema, model } = mongoose;
+
+const categorySchema = new Schema(
   {
     name: {
       type: String,
@@ -29,12 +31,12 @@ const categoriesSchema = new mongoose.Schema(
       },
     },
     parentCategory: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: 'Category', // self-reference for nested categories
       default: null,
     },
     createdBy: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: 'User',
     },
     active: {
@@ -50,7 +52,7 @@ const categoriesSchema = new mongoose.Schema(
 
 //Automatically generate slug from name if not set
 
-categoriesSchema.pre('save', function (next) {
+categorySchema.pre('save', function (next) {
   if (this.isModified('name')) {
     this.slug = slugify(this.name, {
       lower: true,
@@ -60,4 +62,4 @@ categoriesSchema.pre('save', function (next) {
   next();
 });
 
-module.exports = mongoose.model('Category', categoriesSchema);
+export const CategoryDatabase = model('Category', categorySchema);

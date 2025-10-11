@@ -1,7 +1,8 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
+import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
 
-const usersSchema = new mongoose.Schema(
+const { Schema, model } = mongoose;
+const userSchema = new Schema(
   {
     firstName: {
       type: String,
@@ -36,7 +37,7 @@ const usersSchema = new mongoose.Schema(
 );
 
 //Hash password before saving
-usersSchema.pre('save', async function (next) {
+userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) {
     return next();
   }
@@ -45,8 +46,8 @@ usersSchema.pre('save', async function (next) {
 });
 
 //Compare password during login
-usersSchema.methods.comparePassword = async function (plain) {
+userSchema.methods.comparePassword = async function (plain) {
   return await bcrypt.compare(plain, this.password);
 };
 
-module.exports = mongoose.model('User', usersSchema);
+export const userDatabase = model('User', userSchema);

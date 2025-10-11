@@ -1,7 +1,9 @@
-const mongoose = require('mongoose');
-const slugify = require('slugify');
+import mongoose from 'mongoose';
+import slugify from 'slugify';
 
-const postsSchema = mongoose.Schema(
+const { Schema, model } = mongoose;
+
+const postSchema = Schema(
   {
     name: {
       type: String,
@@ -27,12 +29,12 @@ const postsSchema = mongoose.Schema(
       type: String,
     },
     category: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: 'Category',
       required: true,
     },
     createdBy: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: 'User',
     },
   },
@@ -43,7 +45,7 @@ const postsSchema = mongoose.Schema(
 
 //Automatically generate slug name if not set
 
-postsSchema.pre('save', function (next) {
+postSchema.pre('save', function (next) {
   if (this.isModified('name')) {
     this.slug = slugify(this.name, {
       lower: true,
@@ -53,4 +55,4 @@ postsSchema.pre('save', function (next) {
   next();
 });
 
-module.exports = mongoose.model('Post', postsSchema);
+export const postDatabase = model('Post', postSchema);

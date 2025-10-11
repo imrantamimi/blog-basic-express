@@ -1,31 +1,26 @@
-const mongoose = require("mongoose");
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 
-require("dotenv").config();
+dotenv.config();
 
 const MONGO_URI_TEST = process.env.MONGO_URI_TEST;
 
-mongoose.connection.once("open", () => {
-  console.log("MongoDB connection ready");
+mongoose.connection.once('open', () => {
+  console.log('MongoDB connection ready');
 });
 
-mongoose.connection.on("error", (err) => {
+mongoose.connection.on('error', (err) => {
   console.error(err);
 });
 
-async function mongoConnectTest() {
+export async function mongoConnectTest() {
   await mongoose.connect(MONGO_URI_TEST);
 }
 
-async function mongoDisconnectTest() {
+export async function mongoDisconnectTest() {
   await mongoose.disconnect();
 }
 
-async function mongoDropDatabase() {
+export async function mongoDropDatabase() {
   await mongoose.connection.dropDatabase();
 }
-
-module.exports = {
-  mongoConnectTest,
-  mongoDisconnectTest,
-  mongoDropDatabase,
-};

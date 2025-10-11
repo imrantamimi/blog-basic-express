@@ -1,16 +1,14 @@
-const axios = require('axios');
-
-const usersDatabase = require('./users.mongo');
+import { userDatabase } from './users.mongo.js';
 
 // CREATE a new user
-async function createUser(data) {
-  const user = new usersDatabase(data);
+export async function createUser(data) {
+  const user = new userDatabase(data);
   return await user.save();
 }
 
 // READ all users
-async function getAllUsers(skip, limit) {
-  return await usersDatabase
+export async function getAllUsers(skip, limit) {
+  return await userDatabase
     .find()
     .sort({
       createdAt: 1,
@@ -20,30 +18,21 @@ async function getAllUsers(skip, limit) {
 }
 
 // READ one user by ID
-async function getUserById(id) {
-  return await usersDatabase.findById(id);
+export async function getUserById(id) {
+  return await userDatabase.findById(id);
 }
 
 // UPDATE a user by ID
-async function updateUser(data, id) {
-  return await usersDatabase.findByIdAndUpdate(id, data);
+export async function updateUser(data, id) {
+  return await userDatabase.findByIdAndUpdate(id, data);
 }
 
 // DELETE a user by ID
-async function deleteUser(id) {
-  return await usersDatabase.findByIdAndDelete(id);
+export async function deleteUser(id) {
+  return await userDatabase.findByIdAndDelete(id);
 }
 
 //Get user by email
-async function getUserByEmail(email) {
-  return await usersDatabase.findOne({ email });
+export async function getUserByEmail(email) {
+  return await userDatabase.findOne({ email });
 }
-
-module.exports = {
-  createUser,
-  getAllUsers,
-  getUserById,
-  updateUser,
-  deleteUser,
-  getUserByEmail,
-};
