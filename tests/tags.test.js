@@ -24,12 +24,12 @@ describe('Tag API (CRUD + JWT)', () => {
       password: 'password',
       role: 'admin',
     };
-    adminUser = await request(app).post('/v1/admin/users').send(adminData);
+    adminUser = await userDatabase.create(adminData);
 
-    adminId = adminUser.body._id;
+    adminId = adminUser._id;
 
     const loginResponse = await request(app).post('/v1/admin/users/login').send({
-      email: adminUser.body.email,
+      email: adminUser.email,
       password: adminData.password,
     });
 
@@ -88,7 +88,7 @@ describe('Tag API (CRUD + JWT)', () => {
       console.log(`Get By ID response - ${JSON.stringify(response)}`);
       expect(response.statusCode).toBe(200);
       expect(response.body._id).toBe(tagId);
-      expect(response.body.createdBy._id).toBe(adminId);
+      expect(response.body.createdBy._id.toString()).toBe(adminId.toString());
     });
   });
 
@@ -101,10 +101,9 @@ describe('Tag API (CRUD + JWT)', () => {
           slug: 'Tag 2',
         })
         .set('Authorization', `Bearer ${adminToken}`);
-      console.log(`Update response - ${JSON.stringify(response)}`);
       expect(response.statusCode).toBe(200);
       expect(response.body.name).toBe('Tag 2');
-      expect(response.body.createdBy._id).toBe(adminId);
+      expect(response.body.createdBy._id.toString()).toBe(adminId.toString());
     });
   });
 
