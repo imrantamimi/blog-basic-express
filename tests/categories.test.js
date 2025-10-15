@@ -1,10 +1,9 @@
-const request = require('supertest');
+import request from 'supertest';
 
-const app = require('../src/app');
-
-const usersDatabase = require('../src/models/users.mongo');
-const categoryDatabase = require('../src/models/categories.mongo');
-const { mongoConnectTest, mongoDropDatabase, mongoDisconnectTest } = require('../src/config/mongo_test');
+import { mongoConnectTest, mongoDisconnectTest, mongoDropDatabase } from '../src/config/mongo_test';
+import { app } from '../src/app';
+import { userDatabase } from '../src/models/users.mongo';
+import { CategoryDatabase } from '../src/models/categories.mongo';
 
 let userId;
 
@@ -13,7 +12,7 @@ describe('Categories CRUD', () => {
     await mongoConnectTest();
 
     //Seed user to database for ref
-    const user = await usersDatabase.create({
+    const user = await userDatabase.create({
       firstName: 'Imran',
       lastName: 'Tamimi',
       email: 'test@gmail.com',
@@ -32,7 +31,7 @@ describe('Categories CRUD', () => {
 
   it('Should create category with 200 response', async () => {
     const response = await request(app)
-      .post('/v1/categories')
+      .post('/v1/admin/categories')
       .send({
         name: 'Category 1',
         slug: 'Category 1',
@@ -48,21 +47,21 @@ describe('Categories CRUD', () => {
   });
 
   it('Should fetch all the categories with response 200', async () => {
-    const response = await request(app).get('/v1/categories');
+    const response = await request(app).get('/v1/admin/categories');
     expect(response.statusCode).toBe(200);
   });
 
   it('Should fetch a category by ID with response 200', async () => {
-    const response = await request(app).get(`/v1/categories/${categoryId}`);
+    const response = await request(app).get(`/v1/admin/categories/${categoryId}`);
     expect(response.statusCode).toBe(200);
     expect(response.body._id).toBe(categoryId);
     expect(response.body.createdBy._id).toBe(userId);
   });
 
   it('Should delete a category by ID with response 200', async () => {
-    const response = await request(app).delete(`/v1/categories/${categoryId}`);
+    const response = await request(app).delete(`/v1/admin/categories/${categoryId}`);
     expect(response.statusCode).toBe(200);
-    const check = await categoryDatabase.findById(categoryId);
+    const check = await CategoryDatabase.findById(categoryId);
     expect(check).toBeNull();
   });
 });

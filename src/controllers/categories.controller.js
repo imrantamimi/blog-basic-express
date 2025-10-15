@@ -15,6 +15,7 @@ export async function httpGetCategoryById(req, res) {
 
 export async function httpCreateCategory(req, res) {
   const data = req.body;
+  data.createdBy = req.user.id;
   const category = await createCategory(data);
   return res.status(200).json(category);
 }
@@ -22,7 +23,7 @@ export async function httpCreateCategory(req, res) {
 export async function httpUpdateCategory(req, res) {
   const categoryId = req.params.id;
   const data = req.body;
-  const category = await updateCategory(id, data);
+  const category = await updateCategory(categoryId, data);
   return res.status(200).json(category);
 }
 

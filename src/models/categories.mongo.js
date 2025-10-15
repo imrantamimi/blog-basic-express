@@ -52,12 +52,42 @@ const categorySchema = new Schema(
 
 //Automatically generate slug from name if not set
 
-categorySchema.pre('save', function (next) {
-  if (this.isModified('name')) {
-    this.slug = slugify(this.name, {
-      lower: true,
+categorySchema.pre('save', async function (next) {
+  if (this.isModified('slug')) {
+    this.slug = slugify(this.slug, {
+      lowercase: true,
       strict: true,
     });
+    const existing = await this.constructor.findOne({
+      slug: this.slug,
+      _id: {
+        $ne: this._id,
+      },
+    });
+    if (existing) {
+      return next(new Error('Slug must be unique'));
+    }
+  }
+  next();
+});
+
+categorySchema.pre('findOneAndUpdate', async function (next) {
+  const update = this.getUpdate();
+  if (update.slug) {
+    update.slug = slugify(update.slug, {
+      lowercase: true,
+      strict: true,
+    });
+    const existing = await this.model.findOne({
+      slug: update.slug,
+      _id: {
+        $ne: this.getQuery()._id,
+      },
+    });
+    if (existing) {
+      return next(new Error('Slug must be unique'));
+    }
+    this.setUpdate(update);
   }
   next();
 });

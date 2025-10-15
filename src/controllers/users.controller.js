@@ -29,8 +29,8 @@ export async function httpGetUserById(req, res) {
 
 export async function httpUpdateUser(req, res) {
   const userId = req.params.id;
-  const user = req.body;
-  await updateUser(user, userId);
+  const data = req.body;
+  const user = await updateUser(data, userId);
   return res.status(200).json(user);
 }
 
@@ -68,7 +68,7 @@ export async function httpLoginUser(req, res) {
     }
   );
 
-  res.json({
+  return res.status(200).json({
     token: token,
   });
 }

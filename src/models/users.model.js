@@ -24,7 +24,9 @@ export async function getUserById(id) {
 
 // UPDATE a user by ID
 export async function updateUser(data, id) {
-  return await userDatabase.findByIdAndUpdate(id, data);
+  return await userDatabase.findByIdAndUpdate(id, data, {
+    new: true,
+  });
 }
 
 // DELETE a user by ID

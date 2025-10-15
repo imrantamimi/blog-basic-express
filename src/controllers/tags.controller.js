@@ -14,9 +14,18 @@ export async function httpGetTagById(req, res) {
 }
 
 export async function httpCreateTag(req, res) {
-  const data = req.body;
-  const tag = await createTag(data);
-  return res.status(200).json(tag);
+  try {
+    const data = req.body;
+    const tag = await createTag(data);
+    return res.status(200).json(tag);
+  } catch (err) {
+    if (err.message.includes('Slug must be unique')) {
+      return res.status(400).json({
+        message: 'Slug already exists',
+      });
+    }
+    res.status(500).json({ message: 'Server error' });
+  }
 }
 
 export async function httpUpdateTag(req, res) {
