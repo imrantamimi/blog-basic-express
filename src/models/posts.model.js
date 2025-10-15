@@ -92,11 +92,15 @@ export async function deletePost(id) {
   const post = await postDatabase.findById(id);
   if (post && post.image && post.image.url) {
     const imagePath = path.resolve('uploads', 'public', post.image.url); // ensure absolute path * check this part in postman
-    fs.unlink(imagePath, (err) => {
-      if (err) {
-        console.error('Error deleting old image:', err);
-      }
-    });
+    if (fs.existsSync(imagePath)) {
+      fs.unlink(imagePath, (err) => {
+        if (err) {
+          console.error('Error deleting old image:', err);
+        }
+      });
+    } else {
+      console.log(`File not found: ${imagePath}`);
+    }
   }
   return await postDatabase.findByIdAndDelete(id);
 }
