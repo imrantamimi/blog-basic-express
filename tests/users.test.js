@@ -1,7 +1,7 @@
 import request from 'supertest';
-import app from '../src/app';
-import { userDatabase } from '../src/models/users.mongo';
-import { mongoConnectTest, mongoDisconnectTest, mongoDropDatabase } from '../src/config/mongo_test';
+import app from '../src/app.js';
+import { userDatabase } from '../src/models/users.mongo.js';
+import { mongoConnectTest, mongoDisconnectTest, mongoDropDatabase } from '../src/config/mongo_test.js';
 
 //Create tests for user
 describe('User API (CRUD + JWT)', () => {
@@ -24,7 +24,7 @@ describe('User API (CRUD + JWT)', () => {
     adminUser = await userDatabase.create(adminData);
 
     const loginResponse = await request(app).post('/v1/admin/users/login').send({
-      email: adminUser.body.email,
+      email: adminUser.email,
       password: adminData.password,
     });
 
@@ -76,7 +76,7 @@ describe('User API (CRUD + JWT)', () => {
   describe('Test POST /login', () => {
     test('It should login a user with 200 success', async () => {
       const response = await request(app).post('/v1/admin/users/login').send({
-        email: adminUser.body.email,
+        email: adminUser.email,
         password: adminData.password,
       });
       console.log('login response-', JSON.stringify(response.body));

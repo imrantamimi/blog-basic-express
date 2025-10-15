@@ -1,0 +1,53 @@
+name: Basic Blog CI
+# Trigger thw workflow
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+# Define the job
+jobs:
+  tests:
+    # Run on githubs latest ubuntu
+    runs-on: ubuntu-latest
+    # Test across multiple Node and Mongo versions
+    strategy:
+      matrix:
+        node-version: [20.x, 22.x]
+        mongodb-version: ['6', '7']
+    # Environment variables for the job
+    env:
+      CI: true
+      MONGO_URI: mongodb://localhost:27017/testdb
+      JWT_SECRET: test_secret
+    # Define steps (the actual workflow)
+    steps:
+      # Step 1 Checkout Repository code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2 Setup Node.js environment
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      # Step 3 Setup MongoDB service (auto-handled by Action)
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.6.0
+        with:
+          mongodb-version: ${{ matrix.mongodb-version }}
+
+      # Step 4 Install dependencies
+      - name: Install dependencies
+        run: npm ci
+
+      # Step 5 Run tests
+      - name: Run tests
+        run: npm test
+
+      # Step 6 Optionally show test coverage (Good practice)
+      - name: Upload test coverage (optional)
+        if: success()
+        run: |
+          echo " Tests completed successfully on Node ${{ matrix.node-version }} + Mongo ${{ matrix.mongodb-version }}"

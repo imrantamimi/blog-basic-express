@@ -1,10 +1,10 @@
 import request from 'supertest';
 
-import { mongoConnectTest, mongoDisconnectTest, mongoDropDatabase } from '../src/config/mongo_test';
-import app from '../src/app';
-import { userDatabase } from '../src/models/users.mongo';
-import { CategoryDatabase } from '../src/models/categories.mongo';
-import { postDatabase } from '../src/models/posts.mongo';
+import { mongoConnectTest, mongoDisconnectTest, mongoDropDatabase } from '../src/config/mongo_test.js';
+import app from '../src/app.js';
+import { userDatabase } from '../src/models/users.mongo.js';
+import { CategoryDatabase } from '../src/models/categories.mongo.js';
+import { postDatabase } from '../src/models/posts.mongo.js';
 
 describe('Post CRUD', () => {
   let postId;

@@ -13,6 +13,7 @@ Blog Express - TODO
 4 - Add authentication
 5 - Create client side APIs
 6 - Create tests for client side APIs
-7 - Git actions
-8 - Containerize
-9- Add file upload feature
+7- Add file upload feature
+8 - Git actions
+9 - Upgrade project to use TypeScript
+10 - Containerize

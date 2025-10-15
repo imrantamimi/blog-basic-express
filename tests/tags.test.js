@@ -1,9 +1,9 @@
 import request from 'supertest';
 
-import { mongoConnectTest, mongoDisconnectTest, mongoDropDatabase } from '../src/config/mongo_test';
-import app from '../src/app';
-import { userDatabase } from '../src/models/users.mongo';
-import { tagDatabase } from '../src/models/tags.mongo';
+import { mongoConnectTest, mongoDisconnectTest, mongoDropDatabase } from '../src/config/mongo_test.js';
+import app from '../src/app.js';
+import { userDatabase } from '../src/models/users.mongo.js';
+import { tagDatabase } from '../src/models/tags.mongo.js';
 
 describe('Tag API (CRUD + JWT)', () => {
   let adminId;
