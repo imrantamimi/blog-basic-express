@@ -21,7 +21,7 @@ describe('User API (CRUD + JWT)', () => {
       password: 'password',
       role: 'admin',
     };
-    adminUser = await request(app).post('/v1/admin/users').send(adminData);
+    adminUser = await userDatabase.create(adminData);
 
     const loginResponse = await request(app).post('/v1/admin/users/login').send({
       email: adminUser.body.email,
