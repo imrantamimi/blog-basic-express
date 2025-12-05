@@ -29,3 +29,20 @@ export async function protect(req, res, next) {
     });
   }
 }
+
+export function restrictTo(...allowedRoles) {
+  return (req, res, next) => {
+    if (!req.user) {
+      return res.status(500).json({
+        error: 'protect middleware must run before restrictTo',
+      });
+    }
+
+    if (!allowedRoles.includes(req.user.role)) {
+      return res.status(403).json({
+        error: 'You do not have persmission to perform this action',
+      });
+    }
+    next();
+  };
+}

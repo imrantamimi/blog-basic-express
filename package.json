@@ -11,7 +11,8 @@
     "start": "node src/server.js",
     "cluster": "pm2 start src/server.js -i max",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "seed:admin": "node seed/adminSeed.js"
   },
   "keywords": [],
   "author": "ImranTamimi",

@@ -1,4 +1,6 @@
-Blog Express - TODO
+Blog Express-
+
+COMPLETED:
 1 - Create admin side API's for -
     1 - User
     2 - Category
@@ -11,9 +13,13 @@ Blog Express - TODO
     4 - Posts
 3 - Add file upload and validations to APIs
 4 - Add authentication
-5 - Create client side APIs
-6 - Create tests for client side APIs
-7- Add file upload feature
+5- Add file upload feature
+6 - Create client side APIs
+7 - Create tests for client side APIs
 8 - Git actions
-9 - Upgrade project to use TypeScript
-10 - Containerize
+9 - Add admin seeder
+
+INCOMPLETE:
+1 - Add authentication to client APIs
+2 - Upgrade project to use TypeScript
+3 - Containerize

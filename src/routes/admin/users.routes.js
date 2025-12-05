@@ -1,18 +1,21 @@
 import express from 'express';
 import { httpGetAllUsers, httpCreateUser, httpDeleteUser, httpGetUserById, httpLoginUser, httpUpdateUser } from '../../controllers/users.controller.js';
-import { protect } from '../../middleware/auth.middleware.js';
 import { registerUserValidator } from '../../validators/users/createUser.validator.js';
 import { validate } from '../../middleware/validate.middleware.js';
 import { loginUserValidator } from '../../validators/users/loginUser.validator.js';
 import { updateUserValidator } from '../../validators/users/updateUser.validator.js';
 
-const usersRouter = express.Router();
+const publicUsersRouter = express.Router();
+publicUsersRouter.post('/login', loginUserValidator, validate, httpLoginUser);
+publicUsersRouter.post('/', registerUserValidator, validate, httpCreateUser);
 
-usersRouter.post('/', registerUserValidator, validate, httpCreateUser);
-usersRouter.post('/login', loginUserValidator, validate, httpLoginUser);
-usersRouter.get('/', protect, httpGetAllUsers);
-usersRouter.get('/:id', protect, httpGetUserById);
-usersRouter.put('/:id', protect, updateUserValidator, validate, httpUpdateUser);
-usersRouter.delete('/:id', protect, httpDeleteUser);
+const privateUsersRouter = express.Router();
+privateUsersRouter.get('/', httpGetAllUsers);
+privateUsersRouter.get('/:id', httpGetUserById);
+privateUsersRouter.put('/:id', updateUserValidator, validate, httpUpdateUser);
+privateUsersRouter.delete('/:id', httpDeleteUser);
 
-export default usersRouter;
+export default {
+  publicUsersRouter,
+  privateUsersRouter,
+};
